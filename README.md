@@ -32,6 +32,10 @@ wget cdn.learnenough.com/sonnets.txt
 ```
 A file called sonnets.txt should be in your directory, let's start to inspect it.
 ```
+ls -l sonnets.txt
+ls -lh sonnets.txt
+tail sonnets.txt
+head -n 18 sonnets.txt
 less sonnets.txt
 ```
 You can scroll using your keyboard. Do you have an idea what is this file?
