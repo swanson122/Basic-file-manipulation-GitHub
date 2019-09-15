@@ -23,7 +23,7 @@ cd /fs/scratch/PAS####/username
 mkdir Lab_5
 # Listing your directories
 ls
-# Entering to the directory Lab_5
+# Entering into the directory Lab_5
 cd Lab_5
 ```
 Now, let's get a basic text file by using wget:
@@ -31,3 +31,27 @@ Now, let's get a basic text file by using wget:
 wget cdn.learnenough.com/sonnets.txt
 ```
 A file called sonnets.txt should be in your directory, let's start to inspect it.
+```
+less sonnets.txt
+```
+You can scroll using your keyboard. Do you have an idea what is this file?
+Now type:
+```
+/rose
+```
+What does happen? Use the key Q to quit the file
+Now let's use grep:
+```
+grep All sonnets.txt
+grep -i All sonnets.txt
+grep -c All sonnets.txt
+grep -n -C 2 All sonnets.txt
+grep -m2 All sonnets.txt
+grep -n rose sonnets.txt
+```
+Now, let's use the command ```wc```
+```
+man wc
+wc --help
+wc sonnets.txt
+```
