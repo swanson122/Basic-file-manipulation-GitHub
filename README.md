@@ -59,69 +59,76 @@ man wc
 wc --help
 wc sonnets.txt
 ```
-Load the SRA toolkit into your environment on the super computer
+Now we'll load the SRA toolkit into your environment on the super computer
 ```
-$module spider SRA toolkit
+module spider SRA toolkit
 
-$module load sratoolkit/2.9.0
+module load sratoolkit/2.9.0
 ```
-#Read about the options of the command fastq-dump
+Read about the options of the command fastq-dump
+```
+fastq-dump -h
+```
+Make a new directory to store your fastq files from an RNASeq experiment
+```
+mkdir RNASeq_Files
+```
+Retrieve a file from the NCBI Sequence Read Archive
+```
+fastq-dump SRR1649142 -O RNASeq_Files --split-files --gzip
+```
+While you're waiting for the files to download, you can spend time exploring the NCBI SRA
 
-$fastq-dump -h
+View fastq file with zless (zless works the same as less however it works on uncompressed files)
+```
+zless /RNASeq_Data/SRR1649142_1.fastq.gz
 
-#Make a new directory to store your fastq files from an RNASeq experiment
+zless /RNASeq_Data/SRR1649142_2.fastq.gz
+```
+Count the number of bytes in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment
 
-$mkdir RNASeq_Files
+Do you expect them to match?
+```
+zcat /RNASeq_Data/SRR1649142_1.fastq.gz | wc -l
 
-#Retrieve a file from the NCBI Sequence Read Archive
+zcat /RNASeq_Data/SRR1649142_2.fastq.gz | wc -l
+```
+How would you get the number of reads in a fastq file?
+```
+zcat /RNASeq_Data/SRR1649142_1.fastq.gz | echo $(('wc -l'/4))
 
-$fastq-dump SRR1649142 -O RNASeq_Files --split-files --gzip
+zcat /RNASeq_Data/SRR1649142_2.fastq.gz | echo $(('wc -l'/4))
+```
+Unzip your fastq files using gunzip, however be sure to include the option -c; this will ensure you save an unmodified compressed version of your raw data
+```
+gunzip -c /RNASeq_Data/SRR1649142_1.fastq.gz > /RNASeq_Data/SRR1649142_1.fastq
 
-#While waiting for the files to download, you can spend time exploring the NCBI SRA
+gunzip -c /RNASeq_Data/SRR1649142_2.fastq.gz > /RNASeq_Data/SRR1649142_2.fastq
+```
+Make a directory to store your genome file and gff file
+```
+mkdir Genome_Files
 
-#View fastq file with zless (zless works the same as less however it works on uncompressed files)
+cd Genome_Files
+```
+Download the fasta file and gff file for the peach (Prunus persica) genome from the following site: https://www.rosaceae.org/species/prunus_persica/genome_v2.0.a1
+```
+wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.fasta.gz
 
-$zless /RNASeq_Data/SRR1649142_1.fastq.gz
+wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.gff3.gz
+```
+View the genome and gff files
+```
+zless Prunus_persica_v2.0.a1_scaffolds.fasta.gz
 
-$zless /RNASeq_Data/SRR1649142_2.fastq.gz
+zless Prunus_persica_v2.0.a1_scaffolds.gff3.gz
+```
+Extract only chromosome 2 sequences from our fasta file
+```
+gunzip -c Prunus_persica_v2.0.a1_scaffolds.fasta.gz > Prunus_persica_v2.0.a1_scaffolds.fasta
 
-#Count the number of bytes in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment
-#Do you expect them to match?
+awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt 
+```
+Or you could call it Chromosome2.fasta
 
-$zcat /RNASeq_Data/SRR1649142_1.fastq.gz | wc -l
-
-$zcat /RNASeq_Data/SRR1649142_2.fastq.gz | wc -l
-
-#How would you get the number of reads in a fastq file?
-
-$zcat /RNASeq_Data/SRR1649142_1.fastq.gz | echo $(('wc -l'/4))
-
-$zcat /RNASeq_Data/SRR1649142_2.fastq.gz | echo $(('wc -l'/4))
-
-#Unzip your fastq files using gunzip, however be sure to include the option -c; this will ensure you save an unmodified compressed version of your raw data
-
-$gunzip -c /RNASeq_Data/SRR1649142_1.fastq.gz > /RNASeq_Data/SRR1649142_1.fastq
-
-$gunzip -c /RNASeq_Data/SRR1649142_2.fastq.gz > /RNASeq_Data/SRR1649142_2.fastq
-
-#Make a directory to store your genome file and gff file
-
-$mkdir Genome_Files
-
-$cd Genome_Files
-
-#Download the fasta file and gff file for the peach (Prunus persica) genome from the following site: https://www.rosaceae.org/species/prunus_persica/genome_v2.0.a1
-
-$wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.fasta.gz
-
-$wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.gff3.gz
-
-$zless Prunus_persica_v2.0.a1_scaffolds.fasta.gz
-
-$zless Prunus_persica_v2.0.a1_scaffolds.gff3.gz
-
-#Extract only chromosome 2 sequences from our fasta file
-
-$gunzip -c Prunus_persica_v2.0.a1_scaffolds.fasta.gz > Prunus_persica_v2.0.a1_scaffolds.fasta
-
-$awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt #Or you could call it Chromosome2.fasta
+Use the command head to view the txt or fasta file you created.
