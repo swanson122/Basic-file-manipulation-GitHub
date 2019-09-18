@@ -59,7 +59,7 @@ man wc
 wc --help
 wc sonnets.txt
 ```
-Load the SRA toolkit into your environment on the super computer
+Make sure you are in the Lab_5 directory and load the SRA toolkit into your environment on the super computer
 ```
 wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz -O sratoolkit.tar.gz
 
@@ -77,32 +77,30 @@ mkdir RNASeq_Data
 ```
 Retrieve a file from the NCBI Sequence Read Archive
 ```
-$wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos/sra-pub-run-2/SRR1649142/SRR1649142.1 -O RNASeq_Data/SRR1649142.sra
+wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos/sra-pub-run-2/SRR1649142/SRR1649142.1 -O RNASeq_Data/SRR1649142.sra
 ```
 Extract fastq files from the sra file using sratoolkit
 ```
 ./sratoolkit.2.9.6-1-ubuntu64/bin/fasterq-dump RNASeq_Data/SRR1649142.sra -O RNASeq_Data/ -p
 ```
-While waiting for the files to extract, you can spend time exploring the NCBI SRA
-
-View fastq file with zless (zless works the same as less however it works on uncompressed files)
+View fastq file with less
 ```
-less /RNASeq_Data/SRR1649142.sra_1.fastq
+less RNASeq_Data/SRR1649142.sra_1.fastq
 
-less /RNASeq_Data/SRR1649142.sra_2.fastq
+less RNASeq_Data/SRR1649142.sra_2.fastq
 ```
-Count the number of bytes in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment
+Count the number of lines in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment.
 Do you expect them to match?
 ```
-cat /RNASeq_Data/SRR1649142.sra_1.fastq | wc -l
+cat RNASeq_Data/SRR1649142.sra_1.fastq | wc -l
 
-cat /RNASeq_Data/SRR1649142.sra_2.fastq | wc -l
+cat RNASeq_Data/SRR1649142.sra_2.fastq | wc -l
 ```
 How would you get the number of reads in a fastq file?
 ```
-cat /RNASeq_Data/SRR1649142.sra_1.fastq | echo $(('wc -l'/4))
+cat RNASeq_Data/SRR1649142.sra_1.fastq | echo $((`wc -l`/4))
 
-cat /RNASeq_Data/SRR1649142.sra_2.fastq | echo $(('wc -l'/4))
+cat RNASeq_Data/SRR1649142.sra_2.fastq | echo $((`wc -l`/4))
 ```
 
 Make a directory to store your genome file and gff file
@@ -125,5 +123,9 @@ Extract only chromosome 2 sequences from our fasta file
 ```
 gunzip -c Prunus_persica_v2.0.a1_scaffolds.fasta.gz > Prunus_persica_v2.0.a1_scaffolds.fasta
 
-awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt #Or you could call it Chromosome2.fasta
+awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt
+
+head Chromosome2.txt
+
 ```
+Or you could call it Chromosome2.fasta
