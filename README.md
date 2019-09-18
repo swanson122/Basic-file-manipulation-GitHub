@@ -15,7 +15,7 @@ ssh username@owens.osc.edu
 ## Preparing the directory structure and get the first file
 Then, let's go to our working directory and make a new directory called ```Lab_5```
 ```
-# Cheking in which directory you are located
+# Checking in which directory you are located
 pwd
 # Moving to the correct working directory
 cd /fs/scratch/PAS####/username
@@ -59,54 +59,52 @@ man wc
 wc --help
 wc sonnets.txt
 ```
-## Manipulating Fastq and Fasta Files
+Load the SRA toolkit into your environment on the super computer
+```
+wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz -O sratoolkit.tar.gz
 
-Now we'll load the SRA toolkit into your environment on the super computer
-```
-module spider SRA toolkit
+tar xvzf sratoolkit.tar.gz
 
-module load sratoolkit/2.9.0
+rm sratoolkit.tar.gz
+
+./sratoolkit.2.9.6-1-ubuntu64/bin/fasterq-dump
+
 ```
-Read about the options of the command fastq-dump
-```
-fastq-dump -h
-```
+
 Make a new directory to store your fastq files from an RNASeq experiment
 ```
-mkdir RNASeq_Files
+mkdir RNASeq_Data
 ```
 Retrieve a file from the NCBI Sequence Read Archive
 ```
-fastq-dump SRR1649142 -O RNASeq_Files --split-files --gzip
+$wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos/sra-pub-run-2/SRR1649142/SRR1649142.1 -O RNASeq_Data/SRR1649142.sra
 ```
-While you're waiting for the files to download, you can spend time exploring the NCBI SRA
+Extract fastq files from the sra file using sratoolkit
+```
+./sratoolkit.2.9.6-1-ubuntu64/bin/fasterq-dump RNASeq_Data/SRR1649142.sra -O RNASeq_Data/ -p
+```
+While waiting for the files to extract, you can spend time exploring the NCBI SRA
 
 View fastq file with zless (zless works the same as less however it works on uncompressed files)
 ```
-zless /RNASeq_Data/SRR1649142_1.fastq.gz
+less /RNASeq_Data/SRR1649142.sra_1.fastq
 
-zless /RNASeq_Data/SRR1649142_2.fastq.gz
+less /RNASeq_Data/SRR1649142.sra_2.fastq
 ```
 Count the number of bytes in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment
-
 Do you expect them to match?
 ```
-zcat /RNASeq_Data/SRR1649142_1.fastq.gz | wc -l
+cat /RNASeq_Data/SRR1649142.sra_1.fastq | wc -l
 
-zcat /RNASeq_Data/SRR1649142_2.fastq.gz | wc -l
+cat /RNASeq_Data/SRR1649142.sra_2.fastq | wc -l
 ```
 How would you get the number of reads in a fastq file?
 ```
-zcat /RNASeq_Data/SRR1649142_1.fastq.gz | echo $(('wc -l'/4))
+cat /RNASeq_Data/SRR1649142.sra_1.fastq | echo $(('wc -l'/4))
 
-zcat /RNASeq_Data/SRR1649142_2.fastq.gz | echo $(('wc -l'/4))
+cat /RNASeq_Data/SRR1649142.sra_2.fastq | echo $(('wc -l'/4))
 ```
-Unzip your fastq files using gunzip, however be sure to include the option -c; this will ensure you save an unmodified compressed version of your raw data
-```
-gunzip -c /RNASeq_Data/SRR1649142_1.fastq.gz > /RNASeq_Data/SRR1649142_1.fastq
 
-gunzip -c /RNASeq_Data/SRR1649142_2.fastq.gz > /RNASeq_Data/SRR1649142_2.fastq
-```
 Make a directory to store your genome file and gff file
 ```
 mkdir Genome_Files
@@ -118,9 +116,7 @@ Download the fasta file and gff file for the peach (Prunus persica) genome from 
 wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.fasta.gz
 
 wget ftp://ftp.bioinfo.wsu.edu/www.rosaceae.org/Prunus_persica/Prunus_persica-genome.v2.0.a1/assembly/Prunus_persica_v2.0.a1_scaffolds.gff3.gz
-```
-View the genome and gff files
-```
+
 zless Prunus_persica_v2.0.a1_scaffolds.fasta.gz
 
 zless Prunus_persica_v2.0.a1_scaffolds.gff3.gz
@@ -129,8 +125,5 @@ Extract only chromosome 2 sequences from our fasta file
 ```
 gunzip -c Prunus_persica_v2.0.a1_scaffolds.fasta.gz > Prunus_persica_v2.0.a1_scaffolds.fasta
 
-awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt 
+awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta > Chromosome2.txt #Or you could call it Chromosome2.fasta
 ```
-Or you could call it Chromosome2.fasta
-
-Use the command head to view the txt or fasta file you created.
