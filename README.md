@@ -59,6 +59,10 @@ man wc
 wc --help
 wc sonnets.txt
 ```
+## Manipulating Fastq and Fasta Files
+
+We will practice manipulating some fastq and fasta files. First we will look at a file produced from a paried-end RNA Sequencing experiment. To do this, we will download the data from a sequence archive and extract the fastq files using SRA Toolkit.
+
 Make sure you are in the Lab_5 directory and load the SRA toolkit into your environment on the super computer
 ```
 wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz -O sratoolkit.tar.gz
@@ -89,7 +93,7 @@ less RNASeq_Data/SRR1649142.sra_1.fastq
 
 less RNASeq_Data/SRR1649142.sra_2.fastq
 ```
-Count the number of lines in each fastq file to see if they match. They represent the forward and reverse reads from a paired end RNA sequencing experiment.
+Count the number of lines in each fastq file to see if they match. The files represent the forward and reverse reads from a paired end RNA sequencing experiment.
 Do you expect them to match?
 ```
 cat RNASeq_Data/SRR1649142.sra_1.fastq | wc -l
@@ -128,4 +132,4 @@ awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta
 head Chromosome2.txt
 
 ```
-Or you could call it Chromosome2.fasta
+
