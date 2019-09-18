@@ -59,12 +59,12 @@ man wc
 wc --help
 wc sonnets.txt
 ```
-#Load the SRA toolkit into your environment on the super computer
-
+Load the SRA toolkit into your environment on the super computer
+```
 $module spider SRA toolkit
 
 $module load sratoolkit/2.9.0
-
+```
 #Read about the options of the command fastq-dump
 
 $fastq-dump -h
