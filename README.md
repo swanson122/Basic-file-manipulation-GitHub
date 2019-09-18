@@ -59,6 +59,8 @@ man wc
 wc --help
 wc sonnets.txt
 ```
+## Manipulating Fastq and Fasta Files
+
 Now we'll load the SRA toolkit into your environment on the super computer
 ```
 module spider SRA toolkit
