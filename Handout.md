@@ -6,7 +6,6 @@ For this Lab you should have in your computer already installed the following so
 * GitHub Desktop: https://desktop.github.com
 * Atom: https://flight-manual.atom.io/getting-started/sections/installing-atom/ (optional, since it is not fully functional in Windows OS).
   * In Atom, go to the menu Preferences, Install and type: Atom IDE Terminal by Qicrosoft, install the package and restart Atom
-# It does not work in Windows
 
 ## Let's start simple: connect to OSC using ssh and your terminal
 ```
