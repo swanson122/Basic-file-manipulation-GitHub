@@ -6,6 +6,7 @@ For this Lab you should have in your computer already installed the following so
 * GitHub Desktop: https://desktop.github.com
 * Atom: https://flight-manual.atom.io/getting-started/sections/installing-atom/ (optional, since it is not fully functional in Windows OS).
   * In Atom, go to the menu Preferences, Install and type: Atom IDE Terminal by Qicrosoft, install the package and restart Atom
+# It does not work in Windows
 
 ## Let's start simple: connect to OSC using ssh and your terminal
 ```
@@ -65,7 +66,7 @@ Now let's use grep:
 grep All sonnets.txt
 # Piping using grep and wc
 grep rose sonnets.txt | wc
-# grep is case sensitive, then try 
+# grep is case sensitive, then try
 grep -i rose sonnets.txt | wc
 # using a regular expression:
 greep 'ro[a-z]*s' sonnets.txt
@@ -164,4 +165,3 @@ awk 'BEGIN {RS=">"} /Pp02/ {print ">"$0}' Prunus_persica_v2.0.a1_scaffolds.fasta
 head Chromosome2.txt
 
 ```
-
