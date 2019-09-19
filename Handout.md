@@ -21,7 +21,7 @@ Then, let's go to our working directory and make a new directory called ```Lab_5
 # Checking in which directory you are located
 pwd
 # Moving to the correct working directory
-cd /fs/scratch/PAS####/username
+cd /fs/scratch/PAS1582/osu8618
 # Creating the new directory
 mkdir Lab_5
 # Listing your directories
