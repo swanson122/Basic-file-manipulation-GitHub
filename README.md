@@ -4,13 +4,14 @@ This is a guide to Lab 5 in HCS 7194. In this lab we will practice the inspectio
 ## Preliminaries
 For this Lab you should have in your computer already installed the following software
 * GitHub Desktop: https://desktop.github.com
-* Atom: https://flight-manual.atom.io/getting-started/sections/installing-atom/
+* Atom: https://flight-manual.atom.io/getting-started/sections/installing-atom/ (optional, since it is not fully functional in Windows OS).
   * In Atom, go to the menu Preferences, Install and type: Atom IDE Terminal by Qicrosoft, install the package and restart Atom
 
 ## Let's start simple: connect to OSC using ssh and your terminal
 ```
 ssh username@owens.osc.edu
 # Provide your OSC password and you should be able to see the messages and prompt from OSC
+# Windows users will need to use a tool such as MobaXterm or PuTTY
 ```
 ## Preparing the directory structure and get the first file
 Then, let's go to our working directory and make a new directory called ```Lab_5```
@@ -30,7 +31,7 @@ Now, let's get a basic text file by using wget:
 ```
 wget cdn.learnenough.com/sonnets.txt
 ```
-A file called sonnets.txt should be in your directory, let's start to inspect it.
+A file called sonnets.txt should be in your directory, let's start to inspect it:
 ```
 ls -l sonnets.txt
 ls -lh sonnets.txt
@@ -42,23 +43,54 @@ You can scroll using your keyboard. Do you have an idea what is this file?
 Now type:
 ```
 /rose
+# to go to the next result type n
+# to go to the previous result type N
+# if you want to go to the end of the file use G
+# if you want to go to the beginning of the file use 1G
 ```
 What does happen? Use the key Q to quit the file
-Now let's use grep:
-```
-grep All sonnets.txt
-grep -i All sonnets.txt
-grep -c All sonnets.txt
-grep -n -C 2 All sonnets.txt
-grep -m2 All sonnets.txt
-grep -n rose sonnets.txt
-```
+Look for the line "Let me not" in the file.
+
 Now, let's use the command ```wc```
 ```
 man wc
 wc --help
 wc sonnets.txt
+# the output indicates how many lines, words and bytes thera are in the file
 ```
+
+Now let's use grep:
+```
+# Looking for the occurrences of the string "All"
+grep All sonnets.txt
+# Piping using grep and wc
+grep rose sonnets.txt | wc
+# grep is case sensitive, then try 
+grep -i rose sonnets.txt | wc
+# using a regular expression:
+greep 'ro[a-z]*s' sonnets.txt
+# what is happening in the following cases?
+grep -c All sonnets.txt
+grep -n -C 2 All sonnets.txt
+grep -m2 All sonnets.txt
+grep -n rose sonnets.txt
+```
+
+Let's use head and append:
+```
+head sonnets.txt > sonnets_head.txt
+wc sonnets_head.txt
+```
+What if we use pipes?
+```
+head sonnets.txt | wc
+```
+How the command would look like using tail?
+Let's try to extract the first sonnet?
+```
+head -n 18 sonnets.txt | tail -n 14
+```
+
 ## Manipulating Fastq and Fasta Files
 
 We will practice manipulating some fastq and fasta files. First we will look at a file produced from a paried-end RNA Sequencing experiment. To do this, we will download the data from a sequence archive and extract the fastq files using SRA Toolkit.
